@@ -26,7 +26,6 @@ class _HeaderState extends State<Header> {
     _backgroundColorSearch = Colors.white;
     _colorIcon = Colors.white;
     _opacity = 0.0;
-
     _offset = 0.0;
 
     widget.scrollController.addListener(_onScoll);
@@ -40,7 +39,7 @@ class _HeaderState extends State<Header> {
       child: SafeArea(
         bottom: false,
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
           child: Row(
             children: [
               _buildInputSearch(),
@@ -75,7 +74,7 @@ class _HeaderState extends State<Header> {
     return Expanded(
       child: TextField(
         decoration: InputDecoration(
-          contentPadding: const EdgeInsets.all(10),
+          contentPadding: const EdgeInsets.all(4),
           isDense: true,
           enabledBorder: textFieldBorder,
           focusedBorder: textFieldBorder,
