@@ -28,7 +28,7 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [counterABloc, productBloc],
       child: MaterialApp(
-        // debugShowCheckedModeBanner: false,
+        debugShowCheckedModeBanner: false,
         title: 'Exam',
         routes: AppRoute().getAll,
         theme: ThemeData(

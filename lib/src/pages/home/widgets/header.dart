@@ -1,10 +1,11 @@
 import 'dart:ffi';
 
+import 'package:exam/src/config/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Header extends StatefulWidget {
-  final TrackingScrollController scrollController;
+  final ScrollController scrollController;
 
   const Header(this.scrollController, {super.key});
 
@@ -81,12 +82,13 @@ class _HeaderState extends State<Header> {
           hintText: "Search",
           hintStyle: const TextStyle(
             fontSize: 18,
-            color: Colors.deepOrange,
+            color: CustomTheme.primary,
           ),
           prefixIcon: const Icon(Icons.search),
-          prefixIconColor: Colors.blue,
+          prefixIconColor: Colors.grey,
           prefixIconConstraints: sizeIcon,
           suffixIcon: const Icon(Icons.camera_alt),
+          suffixIconColor: Colors.grey,
           suffixIconConstraints: sizeIcon,
           filled: true,
           fillColor: _backgroundColorSearch,
@@ -139,7 +141,7 @@ class _HeaderState extends State<Header> {
       if (_opacity >= 1.0) {
         _opacity = 1.0;
       }
-    } else if (scrollOffset < 100) {
+    } else if (scrollOffset < 50) {
       _opacity = double.parse((_opacity - _opacityMax).toStringAsFixed(2));
       if (_opacity <= 1.0) {
         _opacity = 0;
@@ -153,8 +155,8 @@ class _HeaderState extends State<Header> {
         _offset = 0.0;
         _opacity = 0.0;
       }else {
-        _backgroundColorSearch = Colors.grey[200]!;
-        _colorIcon = Colors.deepOrange;
+        _backgroundColorSearch = CustomTheme.background;
+        _colorIcon = CustomTheme.primary;
       }
 
       _backgroundColor = Colors.white.withOpacity(_opacity);

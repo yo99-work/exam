@@ -6,14 +6,15 @@ import '../../../widgets/BottomLoader.dart';
 import '../bloc/product/product_bloc.dart';
 
 class ProductList extends StatefulWidget {
-  final TrackingScrollController scrollController;
+  final ScrollController scrollController;
+
   const ProductList(this.scrollController, {super.key});
+
   @override
   State<ProductList> createState() => _ProductListState();
 }
 
 class _ProductListState extends State<ProductList> {
-
   @override
   void initState() {
     super.initState();
@@ -32,19 +33,25 @@ class _ProductListState extends State<ProductList> {
             if (state.products.isEmpty) {
               return const Center(child: Text('no posts'));
             }
-            return ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (BuildContext context, int index) {
-                return index >= state.products.length
-                    ? const BottomLoader()
-                    : ProductCardItem(product: state.products[index]);
-              },
-              itemCount: state.hasReachedMax
-                  ? state.products.length
-                  : state.products.length + 1,
-              // controller: widget.scrollController,
-            );
+
+            return GridView.builder(
+                padding: EdgeInsets.symmetric(horizontal: 8),
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    childAspectRatio: 0.68,
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
+                    maxCrossAxisExtent: 350),
+
+                itemCount: state.hasReachedMax
+                    ? state.products.length
+                    : state.products.length + 1,
+                itemBuilder: (BuildContext context, int index) {
+                  return index >= state.products.length
+                      ? const BottomLoader()
+                      : ProductCardItem(product: state.products[index]); Text("$index");
+                });
           case ProductStatus.initial:
             return const Center(child: CircularProgressIndicator());
         }
@@ -61,7 +68,6 @@ class _ProductListState extends State<ProductList> {
   }
 
   void _onScroll() {
-    print("on call");
     if (_isBottom) context.read<ProductBloc>().add(ProductFetched());
   }
 
@@ -69,6 +75,6 @@ class _ProductListState extends State<ProductList> {
     if (!widget.scrollController.hasClients) return false;
     final maxScroll = widget.scrollController.position.maxScrollExtent;
     final currentScroll = widget.scrollController.offset;
-    return currentScroll >= (maxScroll * 0.9);
+    return currentScroll >= (maxScroll * 0.8);
   }
 }
