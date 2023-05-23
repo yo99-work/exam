@@ -3,8 +3,10 @@ import 'dart:ffi';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:exam/src/app_route.dart';
 import 'package:exam/src/constants/asset.dart';
+import 'package:exam/src/pages/home/bloc/product/product_bloc.dart';
 import 'package:exam/src/pages/home/widgets/banner_slider.dart';
 import 'package:exam/src/pages/home/widgets/header.dart';
+import 'package:exam/src/pages/home/widgets/product_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,11 +33,19 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             children: [
               BannerSlider(),
+
+
+              
               Container(
-                color: Colors.lightBlue,
-                height: 1000,
-                width: double.infinity,
-                child: Text("xxxix"),
+                // padding: const EdgeInsets.all(20),
+                // color: Colors.lightBlue,
+                // // height: 100,
+                // width: double.infinity,
+                // height: 1000,
+                child: BlocProvider(
+                  create: (_) => ProductBloc()..add(ProductFetched()),
+                  child: ProductList(_scrollController),
+                ),
               ),
             ],
           ),

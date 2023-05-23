@@ -8,15 +8,18 @@ class ProductApi {
 
   ProductApi({required this.dioClient});
 
-  Future<Response> getProduct(int limit) async {
+  Future<Response> getProduct(int limit, int skip) async {
+    print("CALL");
+
     try {
       final Response response = await dioClient.get(
         "/product",
         queryParameters: {
           'limit': limit,
-          'skip': limit,
+          'skip': skip,
         },
       );
+      // print(response);
       return response;
     } catch (e) {
       rethrow;

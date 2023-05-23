@@ -10,9 +10,9 @@ class ProductRepository {
 
   ProductRepository(this.productApi);
 
-  Future<List<Product>> getUsersRequested(int limit) async {
+  Future<List<Product>> getProduct(int limit, int skip) async {
     try {
-      final response = await productApi.getProduct(limit);
+      final response = await productApi.getProduct(limit, skip);
       final users = (response.data['products'] as List)
           .map((e) => Product.fromJson(e))
           .toList();

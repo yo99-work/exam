@@ -4,10 +4,10 @@ class Product extends Equatable {
   int? id;
   String? title;
   String? description;
-  int? price;
-  double? discountPercentage;
-  double? rating;
-  int? stock;
+  num? price;
+  num? discountPercentage;
+  num? rating;
+  num? stock;
   String? brand;
   String? category;
   String? thumbnail;

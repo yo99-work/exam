@@ -50,6 +50,12 @@ dependencies:
   get_it: ^7.2.0
   intl: ^0.17.0
 
+  #infinite
+  stream_transform: ^2.0.0
+  bloc_concurrency: ^0.2.0
+  logger: ^1.3.0
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
