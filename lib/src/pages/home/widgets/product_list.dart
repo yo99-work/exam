@@ -24,6 +24,7 @@ class _ProductListState extends State<ProductList> {
 
   @override
   Widget build(BuildContext context) {
+    double halfWidth = MediaQuery.of(context).size.width/2;
     return BlocBuilder<ProductBloc, ProductState>(
       builder: (context, state) {
         switch (state.status) {
@@ -38,11 +39,11 @@ class _ProductListState extends State<ProductList> {
                 padding: EdgeInsets.symmetric(horizontal: 8),
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                gridDelegate:  SliverGridDelegateWithMaxCrossAxisExtent(
                     childAspectRatio: 0.68,
                     crossAxisSpacing: 8,
                     mainAxisSpacing: 8,
-                    maxCrossAxisExtent: 350),
+                    maxCrossAxisExtent: halfWidth),
 
                 itemCount: state.hasReachedMax
                     ? state.products.length

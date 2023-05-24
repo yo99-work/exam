@@ -13,7 +13,7 @@ class ProductCardItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    double mediaHeight = MediaQuery.of(context).size.width*0.4;
     return Container(
         // height: 400,
 
@@ -24,7 +24,7 @@ class ProductCardItem extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              height: 135,
+              height: mediaHeight,
               child: CachedNetworkImage(
                 imageUrl: product.thumbnail ?? "",
                 imageBuilder: (context, imageProvider) => Container(
@@ -80,7 +80,7 @@ class ProductCardItem extends StatelessWidget {
                   Spacer(flex: 1),
                   Row(
                     children: [
-                      Icon(Icons.star,  size: 18,color: CustomTheme.yellow),
+                      const Icon(Icons.star,  size: 18,color: CustomTheme.yellow),
                       Text("${product.rating}",
                           style: const TextStyle(
                             color: Colors.black54,
