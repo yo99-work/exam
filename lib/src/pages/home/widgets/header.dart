@@ -29,7 +29,7 @@ class _HeaderState extends State<Header> {
     _opacity = 0.0;
     _offset = 0.0;
 
-    widget.scrollController.addListener(_onScoll);
+    widget.scrollController.addListener(_onScroll);
     super.initState();
   }
 
@@ -134,7 +134,7 @@ class _HeaderState extends State<Header> {
         ],
       );
 
-  void _onScoll() {
+  void _onScroll() {
     final scrollOffset = widget.scrollController.offset;
     if (scrollOffset >= _offset && scrollOffset > 5) {
       _opacity = double.parse((_opacity + _opacityMax).toStringAsFixed(2));

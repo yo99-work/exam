@@ -28,16 +28,16 @@ class _ProductListState extends State<ProductList> {
     return BlocBuilder<ProductBloc, ProductState>(
       builder: (context, state) {
         switch (state.status) {
-          case ProductStatus.failure:
+          case LazyLoadStatus.failure:
             return const Center(child: Text('failed to fetch posts'));
-          case ProductStatus.success:
+          case LazyLoadStatus.success:
             if (state.products.isEmpty) {
               return const Center(child: Text('no posts'));
             }
 
             return GridView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 8),
-                physics: NeverScrollableScrollPhysics(),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 gridDelegate:  SliverGridDelegateWithMaxCrossAxisExtent(
                     childAspectRatio: 0.68,
@@ -53,7 +53,7 @@ class _ProductListState extends State<ProductList> {
                       ? const BottomLoader()
                       : ProductCardItem(product: state.products[index]); Text("$index");
                 });
-          case ProductStatus.initial:
+          case LazyLoadStatus.initial:
             return const Center(child: CircularProgressIndicator());
         }
       },

@@ -40,29 +40,40 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   ) async {
     if (state.hasReachedMax) return;
     try {
-      if (state.status == ProductStatus.initial) {
+      if (state.status == LazyLoadStatus.initial) {
         final products = await productRepository.getProduct(_productLimit, state.products.length);
+        final updateProducts = products.map((item) {
+          item.autoGenerateTag();
+          return item;
+        }).toList();
+
         return emit(state.copyWith(
-            status: ProductStatus.success,
-            products: products,
+            status: LazyLoadStatus.success,
+            products: updateProducts,
             hasReachedMax: false));
       }else {
         final products = await productRepository.getProduct(
             _productLimit, state.products.length);
+
+        final updateProducts = products.map((item) {
+          item.autoGenerateTag();
+          return item;
+        }).toList();
+
         products.isEmpty
             ? emit(state.copyWith(hasReachedMax: true))
             : emit(
           state.copyWith(
-            status: ProductStatus.success,
+            status: LazyLoadStatus.success,
             products: List.of(state.products)
-              ..addAll(products),
+              ..addAll(updateProducts),
             hasReachedMax: false,
           ),
         );
       }
     } catch (e) {
       print("Error $e");
-      emit(state.copyWith(status: ProductStatus.failure));
+      emit(state.copyWith(status: LazyLoadStatus.failure));
     }
   }
 }

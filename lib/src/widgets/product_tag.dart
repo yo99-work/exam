@@ -13,8 +13,8 @@ class ProductTag extends StatelessWidget {
     switch (type) {
       case ProductTagType.bigSale:
         return Container(
-          margin: EdgeInsets.only(left: 4),
-          padding: EdgeInsets.symmetric(vertical: 6, horizontal: 6),
+          margin: const EdgeInsets.only(left: 4),
+          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 6),
           decoration: BoxDecoration(
               color: CustomTheme.primary,
               borderRadius: BorderRadius.circular(18)),

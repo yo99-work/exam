@@ -1,3 +1,4 @@
+import 'package:exam/src/pages/home/bloc/flash_sale_product/flash_sale_product_bloc.dart';
 import 'package:exam/src/pages/home/bloc/product/product_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,9 +25,10 @@ class App extends StatelessWidget {
 
     final counterABloc = BlocProvider<CounterABloc>(create: (context) => CounterABloc());
     final productBloc = BlocProvider<ProductBloc>(create: (context) => ProductBloc());
+    final flashSaleProductBloc = BlocProvider<FlashSaleProductBloc>(create: (context) => FlashSaleProductBloc());
 
     return MultiBlocProvider(
-      providers: [counterABloc, productBloc],
+      providers: [counterABloc, productBloc,flashSaleProductBloc],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Exam',

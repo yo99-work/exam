@@ -1,8 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:exam/src/pages/home/bloc/flash_sale_product/flash_sale_product_bloc.dart';
+import 'package:exam/src/pages/home/widgets/product_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../config/theme.dart';
+import '../../../widgets/BottomLoader.dart';
+import '../bloc/product/product_bloc.dart';
 
 class FlashSaleList extends StatefulWidget {
   const FlashSaleList({Key? key}) : super(key: key);
@@ -14,37 +19,40 @@ class FlashSaleList extends StatefulWidget {
 class _FlashSaleListState extends State<FlashSaleList> {
   @override
   Widget build(BuildContext context) {
-    return GridView.count(
-        childAspectRatio: 0.68,
-        crossAxisCount: 2,
-        shrinkWrap: true,
-        children: [
-          Container(
-            height: 400,
-            padding: const EdgeInsets.only(left: 15, top: 15, right: 15),
-            margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            decoration: BoxDecoration(
-                color: Color(0xFFEDECF2),
-                borderRadius: BorderRadius.circular(20)),
-            child: Column(
-              children: [
-                CachedNetworkImage(
-                  imageUrl: "http://via.placeholder.com/200x150",
-                  imageBuilder: (context, imageProvider) => Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: imageProvider,
-                          fit: BoxFit.cover,
-                          colorFilter:
-                          ColorFilter.mode(CustomTheme.stoke, BlendMode.colorBurn)),
-                    ),
-                  ),
-                  placeholder: (context, url) => CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
-                ),
-              ],
-            ),
-          ),
-        ]);
+    return BlocBuilder<FlashSaleProductBloc, FlashSaleProductState>(
+        builder: (context, state) {
+      switch (state.status) {
+        case LazyLoadStatus.failure:
+          return const Center(child: Text('failed to fetch posts'));
+        case LazyLoadStatus.success:
+          if (state.products.isEmpty) {
+            return const Center(child: Text('no posts'));
+          }
+          return SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.width * 0.68,
+            child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: state.hasReachedMax
+                    ? state.products.length
+                    : state.products.length + 1,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: EdgeInsets.only(left: 8, right: (index+1 == state.products.length) ? 8 : 0),
+                    child: SizedBox(
+                        width: MediaQuery.of(context).size.width / 2.5,
+                        height: MediaQuery.of(context).size.width * 0.68,
+                        child: ProductCardItem(product: state.products[index])),
+                  );
+                  // return index >= state.products.length
+                  //     ? const BottomLoader()
+                  //     : ProductCardItem(product: state.products[index]); Text("$index");
+                }),
+          );
+
+        case LazyLoadStatus.initial:
+          return const Center(child: CircularProgressIndicator());
+      }
+    });
   }
 }

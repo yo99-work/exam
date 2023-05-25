@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:equatable/equatable.dart';
+import 'package:exam/src/widgets/product_tag.dart';
 
 class Product extends Equatable {
   int? id;
@@ -13,6 +16,11 @@ class Product extends Equatable {
   String? thumbnail;
   List<String>? images;
 
+  //Mock
+  bool isFlashSale = false;
+  List<ProductTagType> tags = [];
+
+
   Product(
       this.id,
         this.title,
@@ -25,6 +33,39 @@ class Product extends Equatable {
         this.category,
         this.thumbnail,
         this.images);
+
+  //Mock
+
+  void setIsFlashSale() {
+    isFlashSale = true;
+  }
+
+  String getPriceWithNumericPattern() {
+    int newPrice = price?.toInt() ?? 0;
+    String amount = newPrice.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
+    return "\$$amount";
+  }
+
+  void autoGenerateTag() {
+    List<ProductTagType> myList = [ProductTagType.bigSale, ProductTagType.cashBack, ProductTagType.freeDelivery];
+    tags = getRandomItems(myList, 2);
+  }
+
+  //mock
+  List<ProductTagType> getRandomItems(List<ProductTagType> list, int count) {
+    List<ProductTagType> randomItems = [];
+    Random random = Random();
+
+    while (randomItems.length < count) {
+      int randomIndex = random.nextInt(list.length);
+      ProductTagType randomItem = list[randomIndex];
+      if (!randomItems.contains(randomItem)) {
+        randomItems.add(randomItem);
+      }
+    }
+    return randomItems;
+  }
+
 
   @override
   List<Object?> get props => [id];
@@ -44,18 +85,18 @@ class Product extends Equatable {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['description'] = this.description;
-    data['price'] = this.price;
-    data['discountPercentage'] = this.discountPercentage;
-    data['rating'] = this.rating;
-    data['stock'] = this.stock;
-    data['brand'] = this.brand;
-    data['category'] = this.category;
-    data['thumbnail'] = this.thumbnail;
-    data['images'] = this.images;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = id;
+    data['title'] = title;
+    data['description'] = description;
+    data['price'] = price;
+    data['discountPercentage'] = discountPercentage;
+    data['rating'] = rating;
+    data['stock'] = stock;
+    data['brand'] = brand;
+    data['category'] = category;
+    data['thumbnail'] = thumbnail;
+    data['images'] = images;
     return data;
   }
 }
