@@ -25,7 +25,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: CustomTheme.background,
+      backgroundColor: Colors.white,
       body: Stack(children: [
         ListView(
             padding: EdgeInsets.zero,
@@ -46,6 +46,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         child: ProductPriceView(product: widget.product),
                       ),
 
+                        SizedBox(height: 30),
 
                          AppButton(text: "Add to cart", width: MediaQuery.of(context).size.width * 0.8, bgColor: CustomTheme.primary, textColor: Colors.white)
 

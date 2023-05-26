@@ -1,5 +1,6 @@
 import 'package:exam/src/pages/home/bloc/flash_sale_product/flash_sale_product_bloc.dart';
 import 'package:exam/src/pages/home/bloc/product/product_bloc.dart';
+import 'package:exam/src/pages/main/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
@@ -27,6 +28,7 @@ class App extends StatelessWidget {
     final productBloc = BlocProvider<ProductBloc>(create: (context) => ProductBloc());
     final flashSaleProductBloc = BlocProvider<FlashSaleProductBloc>(create: (context) => FlashSaleProductBloc());
 
+
     return MultiBlocProvider(
       providers: [counterABloc, productBloc,flashSaleProductBloc],
       child: MaterialApp(
@@ -37,9 +39,12 @@ class App extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: HomePage(),
+        home: MainPage(),
 
       ),
     );
   }
+
+
+
 }

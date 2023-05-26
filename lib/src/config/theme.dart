@@ -1,5 +1,8 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
 class CustomTheme {
   static const Color gradientStart = const Color(0xFFF);
   static const Color gradint = const Color(0xFFF);
@@ -12,3 +15,4 @@ class CustomTheme {
 
   static const Color deepOrange = const Color(0xFFFF5F00);
 }
+
