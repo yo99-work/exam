@@ -1,13 +1,23 @@
 import 'package:exam/src/app.dart';
-import 'package:exam/src/bloc/AppBlocObserver.dart';
+import 'package:exam/src/bloc/Observe/app_bloc_observe.dart';
 import 'package:exam/src/di/service_locator.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-void main() {
+
+import 'firebase_options.dart';
+Future<void> main() async {
 
   //configure
   // runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   setupDi();
+
   BlocOverrides.runZoned(() {
     runApp(const App());
   }, blocObserver: AppBlocObserver());

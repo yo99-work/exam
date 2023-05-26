@@ -21,6 +21,8 @@ class FlashSaleProductBloc
   FlashSaleProductBloc() : super(const FlashSaleProductState()) {
     if (!state.hasReachedMax) {
       on<FlashSaleProductFetched>(
+
+
       _onFlashSaleProductFetched,
       transformer: throttleDroppable(throttleDuration),
       );

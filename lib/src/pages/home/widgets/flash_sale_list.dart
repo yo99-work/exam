@@ -30,7 +30,7 @@ class _FlashSaleListState extends State<FlashSaleList> {
           }
           return SizedBox(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.width * 0.7,
+            height: MediaQuery.of(context).size.width * 0.65,
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: state.hasReachedMax
@@ -41,7 +41,7 @@ class _FlashSaleListState extends State<FlashSaleList> {
                     padding: EdgeInsets.only(left: 8, right: (index+1 == state.products.length) ? 8 : 0),
                     child: SizedBox(
                         width: MediaQuery.of(context).size.width / 2.5,
-                        height: MediaQuery.of(context).size.width * 0.7,
+                        height: MediaQuery.of(context).size.width * 0.65,
                         child: ProductCardItem(product: state.products[index])),
                   );
                   // return index >= state.products.length

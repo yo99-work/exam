@@ -1,5 +1,6 @@
 import 'dart:ffi';
 
+import 'package:exam/src/pages/cart/bloc/cart_bloc.dart';
 import 'package:exam/src/pages/home/bloc/flash_sale_product/flash_sale_product_bloc.dart';
 import 'package:exam/src/pages/home/bloc/product/product_bloc.dart';
 import 'package:exam/src/pages/home/widgets/banner_slider.dart';
@@ -22,30 +23,34 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: CustomTheme.background,
-      body: Stack(children: [
-        ListView(
-            padding: EdgeInsets.zero,
-            controller: _scrollController,
-            children: [
-              BannerSlider(),
+    return BlocProvider(
+      create: (_) => CartBloc()..add(CartFetched()),
+      child: Scaffold(
+        backgroundColor: CustomTheme.background,
+        body: Stack(children: [
+          ListView(
+              padding: EdgeInsets.zero,
+              controller: _scrollController,
+              children: [
+                BannerSlider(),
 
-              const SectionTitle(title: "FLASH SALE",),
-              BlocProvider(
+                const SectionTitle(title: "FLASH SALE",),
+                BlocProvider(
                   create: (_) => FlashSaleProductBloc()..add(FlashSaleProductFetched()),
                   child: const FlashSaleList(),
-              ),
+                ),
 
-              const SectionTitle(title: "DAILY DISCOVER",),
-              BlocProvider(
-                create: (_) => ProductBloc()..add(ProductFetched()),
-                child: ProductList(_scrollController),
-              ),
-            ]),
-        Header(_scrollController),
-      ]),
+                const SectionTitle(title: "DAILY DISCOVER",),
+                BlocProvider(
+                  create: (_) => ProductBloc()..add(ProductFetched()),
+                  child: ProductList(_scrollController),
+                ),
+              ]),
+          Header(_scrollController),
+        ]),
+      )
     );
+
   }
 }
 

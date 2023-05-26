@@ -1,10 +1,12 @@
+import 'package:exam/src/bloc/app_bloc.dart';
+import 'package:exam/src/pages/cart/bloc/cart_bloc.dart';
+import 'package:exam/src/pages/login/login_page.dart';
 import 'package:exam/src/pages/product_detail/widgets/product_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../config/theme.dart';
 import '../../data/model/product/product.dart';
 import '../../widgets/app_button.dart';
-import '../home/widgets/banner_slider.dart';
 import '../home/widgets/product_card.dart';
 import 'widgets/header.dart';
 
@@ -33,32 +35,59 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             children: [
               Column(children: [
                 ProductSlider(images: widget.product.images ?? []),
+                const SizedBox(height: 12),
                 Container(
-                  color: Colors.white,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(widget.product.title ?? "", textAlign: TextAlign.left),
-                      Text(widget.product.description ?? ""),
+                      Text(
+                        widget.product.title ?? "",
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w800, fontSize: 18),
+                      ),
+                      Text(
+                        widget.product.description ?? "",
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 14),
+                      ),
+                      const SizedBox(height: 12),
                       Container(
                         padding: const EdgeInsets.symmetric(
                             vertical: 4, horizontal: 6),
                         child: ProductPriceView(product: widget.product),
                       ),
-
-                        SizedBox(height: 30),
-
-                         AppButton(text: "Add to cart", width: MediaQuery.of(context).size.width * 0.8, bgColor: CustomTheme.primary, textColor: Colors.white)
-
+                      const SizedBox(height: 30),
                     ],
                   ),
+                ),
+                BlocBuilder<AppBloc, AppState>(
+                  builder: (context, state) {
+                    return AppButton(
+                      text: "Add to cart",
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      bgColor: CustomTheme.primary,
+                      textColor: Colors.white,
+                      onClick: () {
+                        if (state.status == AppStatus.authenticated) {
+                          context.read<CartBloc>().add(
+                              AddToCart(widget.product));
+                        }else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const LoginPage(isPresentModel: true,), fullscreenDialog: true),
+                          );
+                        }
+                      },
+                    );
+                  },
                 )
               ]),
             ]),
+
         Header(_scrollController, widget.product),
       ]),
     );
   }
 }
-
-

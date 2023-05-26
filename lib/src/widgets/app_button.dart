@@ -5,12 +5,14 @@ class AppButton extends StatelessWidget {
   final double width;
   final Color bgColor;
   final Color textColor;
+  final VoidCallback onClick;
 
   const AppButton(
       {super.key, required this.text,
       required this.width,
       required this.bgColor,
-      required this.textColor});
+      required this.textColor,
+        required this.onClick});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,9 @@ class AppButton extends StatelessWidget {
     );
     return ElevatedButton(
       style: raisedButtonStyle,
-      onPressed: () {},
+      onPressed: () {
+        onClick();
+      },
       child: Text(text, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),),
     );
   }

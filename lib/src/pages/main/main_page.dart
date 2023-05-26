@@ -1,11 +1,14 @@
 import 'package:exam/src/config/theme.dart';
+import 'package:exam/src/pages/cart/bloc/cart_bloc.dart';
 import 'package:exam/src/pages/home/home_page.dart';
 import 'package:exam/src/pages/notification/notification_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../favorite/favorite_page.dart';
+import '../login/login_page.dart';
 import '../settings/settings_page.dart';
 
 class MainPage extends StatelessWidget {

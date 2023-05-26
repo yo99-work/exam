@@ -12,6 +12,7 @@ class CustomTheme {
   static const Color stoke = const Color(0xFFD5DDE0);
   static const Color green = const Color(0xFF00D3A1);
   static const Color yellow = const Color(0xFFFFC900);
+  static const Color white = const Color(0xFFFFFFFF);
 
   static const Color deepOrange = const Color(0xFFFF5F00);
 }

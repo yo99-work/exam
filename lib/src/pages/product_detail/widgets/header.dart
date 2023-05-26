@@ -1,8 +1,10 @@
 import 'dart:ffi';
 
 import 'package:exam/src/config/theme.dart';
+import 'package:exam/src/pages/cart/bloc/cart_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/model/product/product.dart';
 
@@ -51,13 +53,11 @@ class _HeaderState extends State<Header> {
                   onPressed: () => Navigator.pop(context),
                   icon: Icons.arrow_back,
                   notificationValue: 0),
-              const Expanded(child: SizedBox(width: 8))
-              ,
+              const Expanded(child: SizedBox(width: 8)),
               _buildNavigationIcon(
                   onPressed: () => print("click"),
                   icon: Icons.shopping_cart,
-                  notificationValue: 20),
-
+                  notificationValue: 0)
             ],
           ),
         ),
@@ -69,57 +69,48 @@ class _HeaderState extends State<Header> {
           {required VoidCallback onPressed,
           required IconData icon,
           int notificationValue = 0}) =>
-      Stack(
-        children: [Container(
+      Stack(children: [
+        Container(
           padding: EdgeInsets.symmetric(vertical: 4, horizontal: 4),
-          child: Stack(
-            children: [Container(
+          child: Stack(children: [
+            Container(
               width: 36,
               height: 36,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(18),
-                color: Colors.black26
-              ),
-              child:
-                  IconButton(
-                      onPressed: onPressed,
-                      icon: Icon(icon),
-                      color: _colorIcon,
-                      iconSize: 22),
-
-
+                  borderRadius: BorderRadius.circular(18),
+                  color: Colors.black26),
+              child: IconButton(
+                  onPressed: onPressed,
+                  icon: Icon(icon),
+                  color: _colorIcon,
+                  iconSize: 22),
             ),
-
-
-            ]
-          ),
+          ]),
         ),
-
-          notificationValue == 0
-              ? const SizedBox()
-              : Positioned(
-            right: 0,
-            child: Container(
-              padding: EdgeInsets.all(2),
-              decoration: BoxDecoration(
-                color: Colors.deepOrange,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.white),
-              ),
-              constraints:
-              const BoxConstraints(minWidth: 18, minHeight: 18),
-              child: Text(
-                '$notificationValue',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 10,
+        notificationValue == 0
+            ? const SizedBox()
+            : Positioned(
+                right: 0,
+                child: Container(
+                  padding: EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                    color: Colors.deepOrange,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: Colors.white),
+                  ),
+                  constraints:
+                      const BoxConstraints(minWidth: 18, minHeight: 18),
+                  child: Text(
+                    '$notificationValue',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-                textAlign: TextAlign.center,
               ),
-            ),
-          ),
-        ]
-      );
+      ]);
 
   void _onScroll() {
     final scrollOffset = widget.scrollController.offset;
@@ -136,12 +127,12 @@ class _HeaderState extends State<Header> {
     }
 
     setState(() {
-      if(scrollOffset <= 0) {
+      if (scrollOffset <= 0) {
         _backgroundColorSearch = Colors.white;
         _colorIcon = Colors.white;
         _offset = 0.0;
         _opacity = 0.0;
-      }else {
+      } else {
         _backgroundColorSearch = CustomTheme.background;
         _colorIcon = CustomTheme.primary;
       }

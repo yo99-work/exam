@@ -89,7 +89,9 @@ class ProductCardItem extends StatelessWidget {
           Positioned(
             right: -10,
             top: -10,
-            child: Stack(alignment: Alignment.center, children: [
+            child:
+            (!product.isFlashSale) ? SizedBox(height: 0,) :
+            Stack(alignment: Alignment.center, children: [
               const Icon(
                 Icons.bookmark,
                 color: CustomTheme.yellow,
@@ -97,9 +99,9 @@ class ProductCardItem extends StatelessWidget {
               ),
               Center(child: Text("${product.discountPercentage?.toInt() ?? 0}%",
               style: const TextStyle(
-                fontSize: 12,
+                fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: Colors.deepOrange
+                color: Colors.red
               )))
             ]),
           )
