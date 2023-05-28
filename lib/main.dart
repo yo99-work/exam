@@ -1,40 +1,22 @@
-import 'package:exam/src/app_route.dart';
-import 'package:exam/src/bloc/AppBlocObserver.dart';
-import 'package:exam/src/bloc/counter_a_bloc/counter_a_bloc.dart';
-import 'package:exam/src/pages/login_page.dart';
+import 'package:exam/src/app.dart';
+import 'package:exam/src/bloc/Observe/app_bloc_observe.dart';
+import 'package:exam/src/di/service_locator.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-void main() {
+
+import 'firebase_options.dart';
+Future<void> main() async {
+
+  //configure
   // runApp(const MyApp());
-  BlocOverrides.runZoned(() {
-    runApp(MyApp());
-  }, blocObserver: AppBlocObserver());
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  setupDi();
+  runApp(const App());
+
 }
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-
-
-  @override
-  Widget build(BuildContext context) {
-
-    final counterABloc = BlocProvider<CounterABloc>(create: (context) => CounterABloc());
-    // final counterBBloc = BlocProvider<CounterBBloc>(create: (context) => CounterBBloc());
-
-    return MultiBlocProvider(
-      providers: [counterABloc],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        routes: AppRoute().getAll,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        home: const LoginPage(title: 'LoginPage'),
-
-      ),
-    );
-  }
-}
-
