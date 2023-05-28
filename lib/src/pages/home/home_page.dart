@@ -1,5 +1,8 @@
 import 'dart:ffi';
 
+import 'package:exam/src/bloc/app_bloc.dart';
+import 'package:exam/src/data/repository/authen_repository.dart';
+import 'package:exam/src/di/service_locator.dart';
 import 'package:exam/src/pages/cart/bloc/cart_bloc.dart';
 import 'package:exam/src/pages/home/bloc/flash_sale_product/flash_sale_product_bloc.dart';
 import 'package:exam/src/pages/home/bloc/product/product_bloc.dart';
@@ -20,36 +23,36 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _scrollController = ScrollController();
+  @override
+  void initState() {
+    super.initState();
+    context.read<FlashSaleProductBloc>().add(FlashSaleProductFetched());
+    context.read<ProductBloc>().add(ProductFetched());
+    getIt<AuthenRepository>().currentUser.then((user) {
+      context.read<CartBloc>().add(CartFetched(user.id ?? ""));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => CartBloc()..add(CartFetched()),
-      child: Scaffold(
-        backgroundColor: CustomTheme.background,
-        body: Stack(children: [
-          ListView(
-              padding: EdgeInsets.zero,
-              controller: _scrollController,
-              children: [
-                BannerSlider(),
-
-                const SectionTitle(title: "FLASH SALE",),
-                BlocProvider(
-                  create: (_) => FlashSaleProductBloc()..add(FlashSaleProductFetched()),
-                  child: const FlashSaleList(),
-                ),
-
-                const SectionTitle(title: "DAILY DISCOVER",),
-                BlocProvider(
-                  create: (_) => ProductBloc()..add(ProductFetched()),
-                  child: ProductList(_scrollController),
-                ),
-              ]),
-          Header(_scrollController),
-        ]),
-      )
+    return Scaffold(
+      backgroundColor: CustomTheme.background,
+      body: Stack(children: [
+        ListView(
+            padding: EdgeInsets.zero,
+            controller: _scrollController,
+            children: [
+              BannerSlider(),
+              const SectionTitle(title: "FLASH SALE",),
+              const FlashSaleList(),
+              const SectionTitle(title: "DAILY DISCOVER",),
+              ProductList(_scrollController)
+            ]),
+        Header(_scrollController),
+      ]),
     );
+
+
 
   }
 }

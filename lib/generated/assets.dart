@@ -4,6 +4,8 @@ class Assets {
 
   static const String imagesExamLogo = 'assets/images/exam_logo.png';
   static const String imagesLogo = 'assets/images/logo.png';
-  static const String imagesMockBanner1 = 'assets/images/mock_banner1.jpeg';
+  static const String imagesMockBanner1 = 'assets/images/mock_banner1.png';
+  static const String imagesMockBanner2 = 'assets/images/mock_banner2.png';
+  static const String imagesMockBanner3 = 'assets/images/mock_banner3.png';
 
 }

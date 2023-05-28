@@ -44,9 +44,6 @@ class _FlashSaleListState extends State<FlashSaleList> {
                         height: MediaQuery.of(context).size.width * 0.65,
                         child: ProductCardItem(product: state.products[index])),
                   );
-                  // return index >= state.products.length
-                  //     ? const BottomLoader()
-                  //     : ProductCardItem(product: state.products[index]); Text("$index");
                 }),
           );
 

@@ -9,6 +9,7 @@ import '../../data/model/product/product.dart';
 import '../../widgets/app_button.dart';
 import '../home/widgets/product_card.dart';
 import 'widgets/header.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final Product product;
@@ -25,7 +26,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(children: [
@@ -62,21 +62,28 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   ),
                 ),
                 BlocBuilder<AppBloc, AppState>(
-                  builder: (context, state) {
+                  builder: (_, state) {
                     return AppButton(
                       text: "Add to cart",
                       width: MediaQuery.of(context).size.width * 0.8,
                       bgColor: CustomTheme.primary,
                       textColor: Colors.white,
                       onClick: () {
+                        final userId = context.read<AppBloc>().state.user.id ?? "";
                         if (state.status == AppStatus.authenticated) {
-                          context.read<CartBloc>().add(
-                              AddToCart(widget.product));
-                        }else {
+                          context.read<CartBloc>().add(AddToCart(widget.product, userId));
+                          Future.delayed(const Duration(milliseconds: 500), () {
+                            context.read<CartBloc>().add(CartFetched(userId));
+                            _updateCart();
+                          });
+                        } else {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const LoginPage(isPresentModel: true,), fullscreenDialog: true),
+                                builder: (context) => const LoginPage(
+                                      isPresentMode: true,
+                                    ),
+                                fullscreenDialog: true),
                           );
                         }
                       },
@@ -85,9 +92,20 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 )
               ]),
             ]),
-
         Header(_scrollController, widget.product),
       ]),
+    );
+  }
+
+
+  void _updateCart() {
+    // Code to update the cart
+    Fluttertoast.showToast(
+      msg: 'Added to cart',
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.black,
+      textColor: Colors.white,
     );
   }
 }

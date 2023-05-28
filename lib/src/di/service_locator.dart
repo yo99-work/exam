@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:exam/src/data/cache/share_preference.dart';
 import 'package:exam/src/data/network/api/cart/cart_api.dart';
 import 'package:exam/src/data/repository/authen_repository.dart';
 import 'package:exam/src/data/repository/cart_repository.dart';
@@ -13,6 +14,8 @@ final getIt = GetIt.instance;
 Future<void> setupDi() async {
   getIt.registerSingleton(Dio());
   getIt.registerSingleton(DioClient(getIt<Dio>()));
+
+  getIt.registerSingleton(SharedPref());
 
   //Authen api
   getIt.registerSingleton(AuthenRepository());

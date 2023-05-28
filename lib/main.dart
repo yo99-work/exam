@@ -17,8 +17,6 @@ Future<void> main() async {
   );
 
   setupDi();
+  runApp(const App());
 
-  BlocOverrides.runZoned(() {
-    runApp(const App());
-  }, blocObserver: AppBlocObserver());
 }

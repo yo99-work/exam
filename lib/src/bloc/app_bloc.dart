@@ -8,17 +8,13 @@ import '../data/model/user/user.dart';
 import '../di/service_locator.dart';
 
 part 'app_event.dart';
+
 part 'app_state.dart';
 
 
 class AppBloc extends Bloc<AppEvent, AppState> {
 
-  AppBloc():super(
-      (getIt.get<AuthenRepository>().currentUser.isNotEmpty ?? false) ?
-      AppState.authenticated(getIt.get<AuthenRepository>().currentUser):
-      const AppState.unauthenticated()
-  ) {
-
+  AppBloc() :super(AppState(status: AppStatus.unauthenticated, user: User.empty)) {
     on<_AppUserChanged>(_onUserChanged);
     on<AppLogoutRequested>(_onLogoutRequested);
 
@@ -26,17 +22,15 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           (user) => add(_AppUserChanged(user)),
     );
   }
-  
+
   final AuthenRepository _authenRepository = getIt.get<AuthenRepository>();
   late final StreamSubscription<User> _userSubscription;
 
 
   void _onUserChanged(_AppUserChanged event, Emitter<AppState> emit) {
-    emit(
-      event.user.isNotEmpty
-          ? AppState.authenticated(event.user)
-          : const AppState.unauthenticated(),
-    );
+    return emit(state.copyWith(
+        status: event.user.isNotEmpty ? AppStatus.authenticated : AppStatus
+            .unauthenticated, user: event.user));
   }
 
   void _onLogoutRequested(AppLogoutRequested event, Emitter<AppState> emit) {

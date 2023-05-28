@@ -7,7 +7,6 @@ import '../bloc/product/product_bloc.dart';
 
 class ProductList extends StatefulWidget {
   final ScrollController scrollController;
-
   const ProductList(this.scrollController, {super.key});
 
   @override
@@ -18,7 +17,6 @@ class _ProductListState extends State<ProductList> {
   @override
   void initState() {
     super.initState();
-
     widget.scrollController.addListener(_onScroll);
   }
 

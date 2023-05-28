@@ -4,70 +4,100 @@ import '../../../model/product/product.dart';
 
 class CartApi {
   final db = FirebaseFirestore.instance;
-  static const collectName = "CART";
+  static const userCollection = "user";
+  static const cartCollection = "cart";
 
   Stream<QuerySnapshot> init() {
-    return db.collection(collectName).snapshots();
+    return db.collection(userCollection).snapshots();
   }
 
-  Future<List<Product>> readDataFromCollection() async {
-
-    QuerySnapshot querySnapshot = await db.collection(collectName).get();
+  Future<List<Product>> readDataFromCollection(String userId) async {
+    QuerySnapshot querySnapshot = await db
+        .collection(userCollection)
+        .doc(userId)
+        .collection(cartCollection)
+        .get();
     final products = querySnapshot.docs.map((element) {
-     return Product.fromJson(element?.data() as Map<String, dynamic>);
-
+      return Product.fromJson(element?.data() as Map<String, dynamic>);
     }).toList();
 
-    print("THAT ALL PRODUCT ${products}");
     return products;
-
   }
 
-  Future<String> createData(Product product) async {
-    final data = product.toJson();
-    DocumentReference ref = await db.collection(collectName).add(data);
-    print(ref.id);
-    return ref.id;
+  Future<Product?> search(Product product, String userId) async {
+    QuerySnapshot querySnapshot = await db
+        .collection(userCollection)
+        .doc(userId)
+        .collection(cartCollection)
+        .where('id', isEqualTo: product.id)
+        .get();
+    if (querySnapshot.docs.isNotEmpty) {
+      return Product.fromJson(
+          querySnapshot.docs.first.data() as Map<String, dynamic>);
+    } else {
+      return null;
+    }
   }
-  //
-  // Future<List<Product>> readData(String id) async {
-  //   List<Product> myDataList = [];
-  //   final test = await db.collection('CART').get().then((values) {
-  //     values.docChanges.forEach((element) { })
-  //   });
-  //   test.
-  //   return [];
-  //   // print(snapshot.data['name']);
-  // }
-  //
-  // void updateData(DocumentSnapshot doc) async {
-  //   await db.collection('CRUD').document(doc.documentID).updateData({'todo': 'please 🤫'});
-  // }
-  //
-  // void deleteData(DocumentSnapshot doc) async {
-  //   await db.collection('CRUD').document(doc.documentID).delete();
-  // }
 
-  // Should not be inside here but probably inside a todoObject
-  // String randomTodo() {
-  //   final randomNumber = Random().nextInt(4);
-  //   String todo;
-  //   switch (randomNumber) {
-  //     case 1:
-  //       todo = 'Like and subscribe 💩';
-  //       break;
-  //     case 2:
-  //       todo = 'Twitter @robertbrunhage 🤣';
-  //       break;
-  //     case 3:
-  //       todo = 'Patreon in the description 🤗';
-  //       break;
-  //     default:
-  //       todo = 'Leave a comment 🤓';
-  //       break;
-  //   }
-  //   return todo;
-  // }
+  Future<void> createData(Product product, String userId) async {
+    Product updateProduct = product;
+    final productSearch = await search(product, userId);
+    if (productSearch != null) {
+      QuerySnapshot querySnapshot = await db
+          .collection(userCollection)
+          .doc(userId)
+          .collection(cartCollection)
+          .where('id', isEqualTo: product.id)
+          .get();
+      querySnapshot.docs.forEach((element) async {
+        final productMap = (element.data() as Map<String, dynamic>);
+        if (productMap["id"] == product.id) {
+          productMap["quantity"] = productMap["quantity"] + 1;
+          await element.reference.update(productMap);
+        }
+      });
+    } else {
+      final data = updateProduct.toJson();
+      DocumentReference ref = await db
+          .collection(userCollection)
+          .doc(userId)
+          .collection(cartCollection)
+          .add(data);
+    }
+  }
+
+  Future<void> removeData(Product product, String userId) async {
+    final productSearch = await search(product, userId);
+    if (productSearch != null) {
+      QuerySnapshot querySnapshot = await db
+          .collection(userCollection)
+          .doc(userId)
+          .collection(cartCollection)
+          .where('id', isEqualTo: product.id)
+          .get();
+
+      querySnapshot.docs.forEach((element) async {
+        final productMap = (element.data() as Map<String, dynamic>);
+        if (productMap["id"] == product.id) {
+          if (productMap["quantity"] > 1) {
+            productMap["quantity"] = productMap["quantity"] - 1;
+            await element.reference.update(productMap);
+          } else {
+            await element.reference.delete();
+          }
+        }
+      });
+    }
+  }
+
+  Future<void> removeAll(String userId) async {
+    QuerySnapshot querySnapshot = await db
+        .collection(userCollection)
+        .doc(userId)
+        .collection(cartCollection)
+        .get();
+    querySnapshot.docs.forEach((element) async {
+      await element.reference.delete();
+    });
+  }
 }
-
-// CartApi db = CartApi();

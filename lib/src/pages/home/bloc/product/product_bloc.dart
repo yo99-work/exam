@@ -3,11 +3,9 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
-import 'package:exam/src/data/network/api/product/product_api.dart';
 import 'package:exam/src/data/repository/product_repository.dart';
 import 'package:stream_transform/stream_transform.dart';
 
-import '../../../../app.dart';
 import '../../../../data/model/product/product.dart';
 import '../../../../di/service_locator.dart';
 
@@ -22,7 +20,6 @@ EventTransformer<E> throttleDroppable<E>(Duration duration) {
 }
 
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
-  // final test = getIt.get<ProductApi>();
   final productRepository = getIt.get<ProductRepository>();
   final int _productLimit = 20;
   final throttleDuration = const Duration(milliseconds: 100);
@@ -72,7 +69,6 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         );
       }
     } catch (e) {
-      print("Error $e");
       emit(state.copyWith(status: LazyLoadStatus.failure));
     }
   }

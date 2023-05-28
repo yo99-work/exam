@@ -2,9 +2,12 @@ import 'dart:ffi';
 
 import 'package:exam/src/config/theme.dart';
 import 'package:exam/src/pages/cart/bloc/cart_bloc.dart';
+import 'package:exam/src/pages/notification/notification_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../cart/cart_page.dart';
 
 class Header extends StatefulWidget {
   final ScrollController scrollController;
@@ -20,7 +23,7 @@ class _HeaderState extends State<Header> {
   late Color _backgroundColorSearch;
   late Color _colorIcon;
   late double _opacity;
-  late double _opacityMax = 0.01;
+  late final double _opacityMax = 0.01;
   late double _offset;
 
   @override
@@ -50,14 +53,24 @@ class _HeaderState extends State<Header> {
               BlocBuilder<CartBloc, CartState>(
                 builder: (context, state) {
                   return _buildNavigationIcon(
-                      onPressed: () => print("click"),
+                      onPressed: () => {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const CartPage()))
+                          },
                       icon: Icons.shopping_cart,
                       notificationValue: state.products.length);
                 },
               ),
 
               _buildNavigationIcon(
-                  onPressed: () => print("notification"),
+                  onPressed: () => {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const NotificationPage(isPresentMode: true)))
+                  },
                   icon: Icons.chat_sharp,
                   notificationValue: 3), //sample
             ],
@@ -104,9 +117,10 @@ class _HeaderState extends State<Header> {
     );
   }
 
-  _buildNavigationIcon({required VoidCallback onPressed,
-    required IconData icon,
-    int notificationValue = 0}) =>
+  _buildNavigationIcon(
+          {required VoidCallback onPressed,
+          required IconData icon,
+          int notificationValue = 0}) =>
       Stack(
         children: [
           IconButton(
@@ -117,26 +131,26 @@ class _HeaderState extends State<Header> {
           notificationValue == 0
               ? const SizedBox()
               : Positioned(
-            right: 0,
-            child: Container(
-              padding: EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                color: Colors.deepOrange,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.white),
-              ),
-              constraints:
-              const BoxConstraints(minWidth: 20, minHeight: 20),
-              child: Text(
-                '$notificationValue',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 10,
+                  right: 0,
+                  child: Container(
+                    padding: EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      color: Colors.deepOrange,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: Colors.white),
+                    ),
+                    constraints:
+                        const BoxConstraints(minWidth: 20, minHeight: 20),
+                    child: Text(
+                      '$notificationValue',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
         ],
       );
 

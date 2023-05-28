@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:exam/src/bloc/app_bloc.dart';
 import 'package:exam/src/config/theme.dart';
+import 'package:exam/src/pages/cart/bloc/cart_bloc.dart';
 import 'package:exam/src/pages/login/login_page.dart';
 import 'package:exam/src/widgets/app_button.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class _SettingsPageState extends State<SettingsPage> {
       builder: (context, state) {
         return Container(
           color: CustomTheme.primary,
-          child: (state.status == AppStatus.authenticated) ? ProfileView(user: state.user,) : const LoginPage(isPresentModel: false,),
+          child: (state.status == AppStatus.authenticated) ? ProfileView(user: state.user,) : const LoginPage(isPresentMode: false,),
         );
       },
     );
@@ -87,6 +88,7 @@ class ProfileView extends StatelessWidget {
           textColor: CustomTheme.primary,
           onClick: () {
             context.read<AppBloc>().add(AppLogoutRequested());
+            context.read<CartBloc>().add(CartFetched(context.read<AppBloc>().state.user.id ?? ""));
           },
 
         ),

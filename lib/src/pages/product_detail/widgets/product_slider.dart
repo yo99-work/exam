@@ -3,6 +3,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import '../../../widgets/app_image_view.dart';
+
 class ProductSlider extends StatefulWidget {
   final List<String> images;
 
@@ -43,18 +45,9 @@ class _ProductSliderState extends State<ProductSlider> {
               });
             }),
         items: widget.images
-            .map((item) => CachedNetworkImage(
+            .map((item) => AppImageView(
                   imageUrl: item,
-                  imageBuilder: (context, imageProvider) => Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: imageProvider,
-                          fit: BoxFit.cover,
-                          colorFilter: const ColorFilter.mode(
-                              Colors.white, BlendMode.colorBurn)),
-                    ),
-                  ), // placeholder: (context, url) => (),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                  radius: 0,
                 ))
             .toList(),
       ),

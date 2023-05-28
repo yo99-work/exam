@@ -1,17 +1,19 @@
 import 'package:exam/src/config/theme.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:exam/src/pages/cart/bloc/cart_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:formz/formz.dart';
 
+import '../../bloc/app_bloc.dart';
 import '../../constants/asset.dart';
+import '../../widgets/navigation_icon.dart';
 import 'bloc/login_cubit.dart';
 
 class LoginPage extends StatelessWidget {
-  final bool isPresentModel;
+  final bool isPresentMode;
 
-  const LoginPage({super.key, required this.isPresentModel});
+  const LoginPage({super.key, required this.isPresentMode});
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +29,11 @@ class LoginPage extends StatelessWidget {
             );
         }
 
-        if(state.status.isSuccess && isPresentModel) {
+        if(state.status.isSuccess && isPresentMode) {
           Navigator.pop(context);
+          context.read<CartBloc>().add(CartFetched(context.read<AppBloc>().state.user.id ?? ""));
+        }else if (state.status.isSuccess) {
+          context.read<CartBloc>().add(CartFetched(context.read<AppBloc>().state.user.id ?? ""));
         }
       },
       child:
@@ -45,10 +50,21 @@ class LoginPage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Spacer(flex: 1,),
+                      const Spacer(flex: 1,),
                       _GoogleLoginButton(),
-                      SizedBox(height: 150,)
+                      const SizedBox(height: 150,)
                     ],
+                  ),
+                  (!isPresentMode) ? const SizedBox(height:0):
+                  Positioned(
+                    top: 40,
+                    left: 12,
+                    child: NavigationIcon(
+                      icon: Icons.arrow_back,
+                      notificationValue: 0,
+                      colorIcon: CustomTheme.white,
+                      onPressed: () => Navigator.pop(context),
+                    ),
                   ),
                 ],
               )
@@ -56,9 +72,6 @@ class LoginPage extends StatelessWidget {
     );
   }
 }
-
-
-
 
 class _GoogleLoginButton extends StatelessWidget {
   @override

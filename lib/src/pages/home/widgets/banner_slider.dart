@@ -9,10 +9,9 @@ class BannerSlider extends StatefulWidget {
 
 class _BannerSliderState extends State<BannerSlider> {
   final List<String> _image = [
-    // 'assets/images/mock_banner1.jpeg',
-    // 'assets/images/mock_banner2.jpeg',
-    'assets/images/mock_banner1.jpeg',
-
+    'assets/images/mock_banner1.png',
+    'assets/images/mock_banner2.png',
+    'assets/images/mock_banner3.png'
   ];
 
   late int _indexPage;

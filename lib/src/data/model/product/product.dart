@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:math';
 
 import 'package:equatable/equatable.dart';
@@ -15,6 +16,12 @@ class Product extends Equatable {
   String? category;
   String? thumbnail;
   List<String>? images;
+
+  int? quantity = 1;
+
+  int getPriceByQuantity() {
+    return  (price as int) * (quantity ?? 1);
+  }
 
   //Mock
   bool isFlashSale = false;
@@ -42,7 +49,17 @@ class Product extends Equatable {
 
   String getPriceWithNumericPattern() {
     int newPrice = price?.toInt() ?? 0;
-    String amount = newPrice.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
+    return convertToHuman(newPrice);
+  }
+
+
+  static String convertToHuman(int price) {
+    String amount = price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
+    return "\$$amount";
+  }
+
+  static String convertToHumanD(double price) {
+    String amount = price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
     return "\$$amount";
   }
 
@@ -68,7 +85,7 @@ class Product extends Equatable {
 
 
   @override
-  List<Object?> get props => [id];
+  List<Object?> get props => [id, quantity];
 
   Product.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -81,11 +98,13 @@ class Product extends Equatable {
     brand = json['brand'];
     category = json['category'];
     thumbnail = json['thumbnail'];
+    quantity = json['quantity'];
     images = json['images'].cast<String>();
+
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['title'] = title;
     data['description'] = description;
@@ -97,6 +116,7 @@ class Product extends Equatable {
     data['category'] = category;
     data['thumbnail'] = thumbnail;
     data['images'] = images;
+    data['quantity'] = quantity ?? 1;
     return data;
   }
 }

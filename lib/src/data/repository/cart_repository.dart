@@ -8,19 +8,34 @@ class CartRepository {
 
   CartRepository({ required this.cartApi});
 
-  Future<List<Product>> getProducts() async {
+  Future<List<Product>> getProducts(String userId) async {
     try {
-      final response = await cartApi.readDataFromCollection();
+      final response = await cartApi.readDataFromCollection(userId);
       return response;
     } catch (e){
       throw e;
     }
   }
 
-  Future<void> addProduct(Product product) async {
+  Future<void> addProduct(Product product, String userId) async {
     try {
-      final response = await cartApi.createData(product);
-      print("ADD success ${response}");
+      await cartApi.createData(product, userId);
+    } catch (e){
+      throw e;
+    }
+  }
+
+  Future<void> removeProduct(Product product, String userId) async {
+    try {
+      await cartApi.removeData(product, userId);
+    } catch (e){
+      throw e;
+    }
+  }
+
+  Future<void> clearCart(String userId) async {
+    try {
+      await cartApi.removeAll(userId);
     } catch (e){
       throw e;
     }

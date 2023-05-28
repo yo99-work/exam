@@ -1,11 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:exam/src/app_route.dart';
+
 import 'package:exam/src/config/theme.dart';
 import 'package:exam/src/pages/product_detail/product_detail_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../data/model/product/product.dart';
+import '../../../widgets/app_image_view.dart';
 import '../../../widgets/product_tag.dart';
 
 class ProductCardItem extends StatelessWidget {
@@ -15,7 +15,7 @@ class ProductCardItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double mediaHeight = MediaQuery.of(context).size.width * 0.38;
+    double mediaHeight = MediaQuery.of(context).size.width * 0.35;
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -34,24 +34,8 @@ class ProductCardItem extends StatelessWidget {
                 children: [
                   SizedBox(
                     height: mediaHeight,
-                    child: CachedNetworkImage(
-                      imageUrl: product.thumbnail ?? "",
-                      imageBuilder: (context, imageProvider) => Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                              color: CustomTheme.stoke,
-                              style: BorderStyle.solid,
-                              width: 0.5),
-                          image: DecorationImage(
-                              image: imageProvider,
-                              fit: BoxFit.cover,
-                              colorFilter: const ColorFilter.mode(
-                                  Colors.white, BlendMode.colorBurn)),
-                        ),
-                      ), // placeholder: (context, url) => (),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
-                    ),
+                    child: AppImageView(
+                        imageUrl: product.thumbnail ?? "", radius: 10),
                   ),
                   Container(
                     padding:
@@ -89,21 +73,24 @@ class ProductCardItem extends StatelessWidget {
           Positioned(
             right: -10,
             top: -10,
-            child:
-            (!product.isFlashSale) ? SizedBox(height: 0,) :
-            Stack(alignment: Alignment.center, children: [
-              const Icon(
-                Icons.bookmark,
-                color: CustomTheme.yellow,
-                size: 60,
-              ),
-              Center(child: Text("${product.discountPercentage?.toInt() ?? 0}%",
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: Colors.red
-              )))
-            ]),
+            child: (!product.isFlashSale)
+                ? const SizedBox(
+                    height: 0,
+                  )
+                : Stack(alignment: Alignment.center, children: [
+                    const Icon(
+                      Icons.bookmark,
+                      color: CustomTheme.yellow,
+                      size: 60,
+                    ),
+                    Center(
+                        child: Text(
+                            "${product.discountPercentage?.toInt() ?? 0}%",
+                            style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.red)))
+                  ]),
           )
         ],
       ),

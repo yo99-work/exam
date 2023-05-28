@@ -15,7 +15,6 @@ part 'flash_sale_product_state.dart';
 class FlashSaleProductBloc
     extends Bloc<FlashSaleProductEvent, FlashSaleProductState> {
   final productRepository = getIt.get<ProductRepository>();
-  final int _productLimit = 20;
   final throttleDuration = const Duration(milliseconds: 100);
 
   FlashSaleProductBloc() : super(const FlashSaleProductState()) {
@@ -33,7 +32,6 @@ class FlashSaleProductBloc
     FlashSaleProductEvent event,
     Emitter<FlashSaleProductState> emit,
   ) async {
-    print("STATE ====== ${state.hasReachedMax}");
     if (state.hasReachedMax) return;
     try {
       if (state.status == LazyLoadStatus.initial) {
@@ -51,7 +49,6 @@ class FlashSaleProductBloc
             hasReachedMax: true));
       }
     } catch (e) {
-      print("Error $e");
       emit(state.copyWith(status: LazyLoadStatus.failure));
     }
   }

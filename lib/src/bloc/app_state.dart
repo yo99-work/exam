@@ -6,21 +6,36 @@ enum AppStatus {
 }
 
 final class AppState extends Equatable {
-   const AppState._({
-    required this.status,
-    this.user =  User.empty,
-  });
+   AppState({required this.status, required this.user}) {
+     _initialize();
+   }
 
-  const AppState.authenticated(User user)
-      : this._(status: AppStatus.authenticated, user: user);
+   Future<void> _initialize() async {
+     final currentUser = await getIt<AuthenRepository>().currentUser;
+     user = currentUser;
+     if (currentUser.isEmpty) {
+       status = AppStatus.unauthenticated;
+     }else {
+       status = AppStatus.authenticated;
+     }
+   }
 
-  const AppState.unauthenticated() : this._(status: AppStatus.unauthenticated);
+   AppStatus status;
+   User user;
 
-  final AppStatus status;
-  final User user;
+   AppState copyWith({
+     AppStatus? status,
+     User? user,
+   }) {
+     return AppState(
+       status: status ?? this.status,
+       user: user ?? this.user
+     );
+   }
 
 
 
   @override
   List<Object> get props => [status, user];
+
 }

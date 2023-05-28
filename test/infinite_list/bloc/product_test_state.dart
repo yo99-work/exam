@@ -1,6 +1,14 @@
 part of 'product_test_bloc.dart';
 
-@immutable
-abstract class ProductTestState {}
 
-class ProductTestInitial extends ProductTestState {}
+void main() {
+  group('ProductState', () {
+    test('supports value comparison', () {
+      expect(ProductState(), ProductState());
+      expect(
+        ProductState().toString(),
+        ProductState().toString(),
+      );
+    });
+  });
+}
