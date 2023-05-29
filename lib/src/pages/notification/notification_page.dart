@@ -52,7 +52,7 @@ class _NotificationPageState extends State<NotificationPage> {
                         child: ListView.builder(
                             itemCount: state.notifications.length,
                             itemBuilder: (context, index) {
-                              return _createNotificationItem(state, index);
+                              return _CreateNotificationItem(state, index);
                             }),
                       );
 
@@ -63,7 +63,7 @@ class _NotificationPageState extends State<NotificationPage> {
                 },
               ),
 
-              (!widget.isPresentMode) ? SizedBox(height: 0) :
+              (!widget.isPresentMode) ? const SizedBox(height: 0) :
               Positioned(
                 top: 40,
                 left: 12,
@@ -77,7 +77,6 @@ class _NotificationPageState extends State<NotificationPage> {
 
               const Positioned(
                 top: 50,
-
                 child: Text(
                   "Notification",
                   style: TextStyle(
@@ -92,7 +91,7 @@ class _NotificationPageState extends State<NotificationPage> {
     );
   }
 
-  Container _createNotificationItem(NotificationState state, int index) {
+  Container _CreateNotificationItem(NotificationState state, int index) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
       margin: const EdgeInsets.only(left: 12, right: 12, top: 10),

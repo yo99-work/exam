@@ -22,7 +22,6 @@ class Header extends StatefulWidget {
 
 class _HeaderState extends State<Header> {
   late Color _backgroundColor;
-  late Color _backgroundColorSearch;
   late Color _colorIcon;
   late double _opacity;
   late double _opacityMax = 0.01;
@@ -31,7 +30,6 @@ class _HeaderState extends State<Header> {
   @override
   void initState() {
     _backgroundColor = Colors.transparent;
-    _backgroundColorSearch = Colors.white;
     _colorIcon = Colors.white;
     _opacity = 0.0;
     _offset = 0.0;
@@ -68,7 +66,7 @@ class _HeaderState extends State<Header> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const CartPage()));
+                              builder: (context) => const CartPage(isPresentMode: true,)));
 
                     },
                   );
@@ -97,12 +95,10 @@ class _HeaderState extends State<Header> {
 
     setState(() {
       if (scrollOffset <= 0) {
-        _backgroundColorSearch = Colors.white;
         _colorIcon = Colors.white;
         _offset = 0.0;
         _opacity = 0.0;
       } else {
-        _backgroundColorSearch = CustomTheme.background;
         _colorIcon = CustomTheme.primary;
       }
 
