@@ -1,7 +1,6 @@
 
 import 'package:exam/src/config/theme.dart';
 import 'package:exam/src/pages/product_detail/product_detail_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../data/model/product/product.dart';

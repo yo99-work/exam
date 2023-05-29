@@ -18,7 +18,7 @@ class CartApi {
         .collection(cartCollection)
         .get();
     final products = querySnapshot.docs.map((element) {
-      return Product.fromJson(element?.data() as Map<String, dynamic>);
+      return Product.fromJson(element.data() as Map<String, dynamic>);
     }).toList();
 
     return products;

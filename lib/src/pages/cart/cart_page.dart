@@ -12,7 +12,7 @@ import '../../di/service_locator.dart';
 import '../../widgets/navigation_icon.dart';
 
 class CartPage extends StatefulWidget {
-  const CartPage();
+  const CartPage({super.key});
 
   @override
   _CartPageState createState() => _CartPageState();
@@ -187,7 +187,7 @@ class _CartPageState extends State<CartPage> {
   Row _updateCart(CartState state, int index) {
     return Row(
       children: [
-        Container(
+        SizedBox(
             width: 40,
             height: 30,
             child: IconButton(

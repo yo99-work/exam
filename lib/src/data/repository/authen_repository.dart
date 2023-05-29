@@ -30,10 +30,7 @@ class AuthenRepository {
       final user = firebaseUser == null ? User.empty : firebaseUser.toUser;
       try {
         getIt<SharedPref>().save(userCacheKey, user.toJson());
-        print("SAVE USER SUCCESS");
-      }catch(e) {
-        print("SAVE USER ${e}");
-      }
+      }catch(_) {}
       return user;
     });
   }
@@ -42,10 +39,8 @@ class AuthenRepository {
     try {
       final result = await getIt<SharedPref>().read(userCacheKey);
       final user = User.fromJson(result);
-      print("GET USER ${user.id}");
       return user;
     }catch(e) {
-      print("GET USER ${e}");
       return User.empty;
     }
   }

@@ -43,7 +43,6 @@ class MainPage extends StatelessWidget {
     );
   }
 
-
   List<Widget> _buildScreens() {
     return [
       HomePage(),

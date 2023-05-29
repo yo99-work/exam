@@ -9,8 +9,6 @@ class ProductApi {
   ProductApi({required this.dioClient});
 
   Future<Response> getProduct(int limit, int skip) async {
-    print("CALL");
-
     try {
       final Response response = await dioClient.get(
         "/product",
@@ -19,13 +17,11 @@ class ProductApi {
           'skip': skip,
         },
       );
-      // print(response);
       return response;
     } catch (e) {
       rethrow;
     }
   }
-
 
   Future<Response> getFlashSaleProduct(int limit) async {
     try {
@@ -41,8 +37,4 @@ class ProductApi {
       rethrow;
     }
   }
-
-
-
-
 }

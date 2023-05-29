@@ -1,6 +1,3 @@
-import 'dart:ffi';
-
-import 'package:exam/src/bloc/app_bloc.dart';
 import 'package:exam/src/data/repository/authen_repository.dart';
 import 'package:exam/src/di/service_locator.dart';
 import 'package:exam/src/pages/cart/bloc/cart_bloc.dart';
@@ -10,13 +7,14 @@ import 'package:exam/src/pages/home/widgets/banner_slider.dart';
 import 'package:exam/src/pages/home/widgets/flash_sale_list.dart';
 import 'package:exam/src/pages/home/widgets/header.dart';
 import 'package:exam/src/pages/home/widgets/product_list.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../config/theme.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   State<HomePage> createState() => _HomePageState();
 }

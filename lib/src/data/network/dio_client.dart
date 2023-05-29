@@ -13,15 +13,8 @@ class DioClient {
       ..options.baseUrl = Endpoints.baseUrl
       // ..options.connectTimeout = Endpoints.connectionTimeout as Duration?
       // ..options.receiveTimeout = Endpoints.receiveTimeout as Duration?
-      ..options.responseType = ResponseType.json;
-      // ..interceptors.add(PrettyDioLogger());
-      // ..interceptors.add(LogInterceptor(
-      //   request: true,
-      //   requestHeader: true,
-      //   requestBody: true,
-      //   responseHeader: true,
-      //   responseBody: true,
-      // ));
+      ..options.responseType = ResponseType.json
+      ..interceptors.add(PrettyDioLogger());
   }
   // Get:-----------------------------------------------------------------------
   Future<Response> get(

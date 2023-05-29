@@ -1,13 +1,14 @@
-part of 'product_test_bloc.dart';
+import 'package:exam/src/pages/home/bloc/product/product_bloc.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 
 void main() {
   group('ProductState', () {
     test('supports value comparison', () {
-      expect(ProductState(), ProductState());
+      expect(const ProductState(), const ProductState());
       expect(
-        ProductState().toString(),
-        ProductState().toString(),
+        const ProductState().toString(),
+        const ProductState().toString(),
       );
     });
   });

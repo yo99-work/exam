@@ -15,22 +15,9 @@ class DioExceptions implements Exception {
         message = "Receive timeout in connection with API server";
         break;
 
-      // case DioErrorType.response:
-      //   message = _handleError(
-      //     dioError.response?.statusCode,
-      //     dioError.response?.data,
-      //   );
-      //   break;
       case DioErrorType.sendTimeout:
         message = "Send timeout in connection with API server";
         break;
-      // case DioErrorType.other:
-      //   if (dioError.message.contains("SocketException")) {
-      //     message = 'No Internet';
-      //     break;
-      //   }
-      //   message = "Unexpected error occurred";
-      //   break;
       default:
         message = "Something went wrong";
         break;

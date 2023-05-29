@@ -6,7 +6,6 @@ class SharedPref {
   read(String key) async {
     final prefs = await SharedPreferences.getInstance();
      final json = jsonDecode(prefs.getString(key) ?? "");
-     print("JSON ${json}");
      return json;
   }
 

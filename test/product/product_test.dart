@@ -1,6 +1,7 @@
 import 'package:exam/src/data/model/product/product.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+
 void main() {
   test('Converts integer price to human-readable format', () {
     // Arrange

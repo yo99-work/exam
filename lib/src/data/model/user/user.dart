@@ -6,8 +6,6 @@ class User extends Equatable {
   final String? name;
   final String? photo;
 
-
-
   const User({this.id, this.email, this.name, this.photo});
 
   static const User empty = User(id: "");
@@ -15,8 +13,6 @@ class User extends Equatable {
   bool get isEmpty => this == User.empty;
 
   bool get isNotEmpty => this != User.empty;
-
-  // User._(this.id, this.email,this.name,this.photo)
 
   factory User.fromJson(Map<String, dynamic> json) {
     final id = json['id'];
@@ -34,22 +30,6 @@ class User extends Equatable {
     data['photo'] = this.photo;
     return data;
   }
-
-  // User.fromJson(Map<String, dynamic> json, this.id, this.email, this.name, this.photo) {
-  //   id = json['id'];
-  //   email = json['email'];
-  //   name = json['name'];
-  //   photo = json['photo'];
-  // }
-  //
-  // Map<String, dynamic> toJson() {
-  //   final Map<String, dynamic> data = Map<String, dynamic>();
-  //   data['id'] = id;
-  //   data['email'] = email;
-  //   data['name'] = name;
-  //   data['photo'] = photo;
-  //   return data;
-  // }
 
   @override
   List<Object?> get props => [email, id, name, photo];
