@@ -15,5 +15,17 @@ class CustomTheme {
   static const Color white = const Color(0xFFFFFFFF);
 
   static const Color deepOrange = const Color(0xFFFF5F00);
-}
 
+  static const LinearGradient primaryGradient = LinearGradient(
+      begin: Alignment.topRight,
+      end: Alignment.bottomCenter,
+      stops: [
+        0.1,
+        0.9,
+      ],
+      colors: [
+        Color(0xFF8f97ff),
+        Color(0xFF4E54A3),
+
+      ]);
+}
