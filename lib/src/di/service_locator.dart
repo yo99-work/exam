@@ -17,14 +17,12 @@ Future<void> setupDi() async {
 
   getIt.registerSingleton(SharedPref());
 
-  //Authen api
+  //Authentication api
   getIt.registerSingleton(AuthenRepository());
 
   //Product api
   getIt.registerSingleton(ProductApi(dioClient: getIt<DioClient>()));
   getIt.registerSingleton(ProductRepository(getIt.get<ProductApi>()));
-
-
 
   //Cart api
   getIt.registerSingleton(CartApi());
