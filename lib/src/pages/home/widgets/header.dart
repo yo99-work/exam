@@ -69,10 +69,10 @@ class _HeaderState extends State<Header> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const NotificationPage(isPresentMode: true)))
+                            builder: (context) => NotificationPage(isPresentMode: true)))
                   },
                   icon: Icons.chat_sharp,
-                  notificationValue: 3), //sample
+                  notificationValue: 2), //sample
             ],
           ),
         ),

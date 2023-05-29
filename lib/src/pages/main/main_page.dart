@@ -3,7 +3,6 @@ import 'package:exam/src/pages/home/home_page.dart';
 import 'package:exam/src/pages/notification/notification_page.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
-import '../favorite/favorite_page.dart';
 import '../settings/settings_page.dart';
 
 class MainPage extends StatelessWidget {
@@ -45,8 +44,7 @@ class MainPage extends StatelessWidget {
 
   List<Widget> _buildScreens() {
     return [
-      HomePage(),
-      const FavoritePage(),
+      const HomePage(),
       const NotificationPage(isPresentMode: false),
       const SettingsPage()
     ];
@@ -61,12 +59,6 @@ class MainPage extends StatelessWidget {
         inactiveColorPrimary: Colors.white,
       ),
 
-      PersistentBottomNavBarItem(
-        icon: const Icon(Icons.favorite),
-        inactiveIcon: const Icon(Icons.favorite_border),
-        activeColorPrimary: Colors.white,
-        inactiveColorPrimary: Colors.white,
-      ),
 
       PersistentBottomNavBarItem(
         icon: const Icon(Icons.notifications_sharp),

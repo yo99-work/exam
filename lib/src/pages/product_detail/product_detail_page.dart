@@ -33,64 +33,67 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             padding: EdgeInsets.zero,
             controller: _scrollController,
             children: [
-              Column(children: [
-                ProductSlider(images: widget.product.images ?? []),
-                const SizedBox(height: 12),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.product.title ?? "",
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w800, fontSize: 18),
-                      ),
-                      Text(
-                        widget.product.description ?? "",
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w600, fontSize: 14),
-                      ),
-                      const SizedBox(height: 12),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 4, horizontal: 6),
-                        child: ProductPriceView(product: widget.product),
-                      ),
-                      const SizedBox(height: 30),
-                    ],
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: Column(children: [
+                  ProductSlider(images: widget.product.images ?? []),
+                  const SizedBox(height: 12),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.product.title ?? "",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w800, fontSize: 18),
+                        ),
+                        Text(
+                          widget.product.description ?? "",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 14),
+                        ),
+                        const SizedBox(height: 12),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 4, horizontal: 6),
+                          child: ProductPriceView(product: widget.product),
+                        ),
+                        const SizedBox(height: 30),
+                      ],
+                    ),
                   ),
-                ),
-                BlocBuilder<AppBloc, AppState>(
-                  builder: (_, state) {
-                    return AppButton(
-                      text: "Add to cart",
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      bgColor: CustomTheme.primary,
-                      textColor: Colors.white,
-                      onClick: () {
-                        final userId = context.read<AppBloc>().state.user.id ?? "";
-                        if (state.status == AppStatus.authenticated) {
-                          context.read<CartBloc>().add(AddToCart(widget.product, userId));
-                          Future.delayed(const Duration(milliseconds: 500), () {
-                            context.read<CartBloc>().add(CartFetched(userId));
-                            _updateCart();
-                          });
-                        } else {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const LoginPage(
-                                      isPresentMode: true,
-                                    ),
-                                fullscreenDialog: true),
-                          );
-                        }
-                      },
-                    );
-                  },
-                )
-              ]),
+                  BlocBuilder<AppBloc, AppState>(
+                    builder: (_, state) {
+                      return AppButton(
+                        text: "Add to cart",
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        bgColor: CustomTheme.primary,
+                        textColor: Colors.white,
+                        onClick: () {
+                          final userId = context.read<AppBloc>().state.user.id ?? "";
+                          if (state.status == AppStatus.authenticated) {
+                            context.read<CartBloc>().add(AddToCart(widget.product, userId));
+                            Future.delayed(const Duration(milliseconds: 500), () {
+                              context.read<CartBloc>().add(CartFetched(userId));
+                              _updateCart();
+                            });
+                          } else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const LoginPage(
+                                        isPresentMode: true,
+                                      ),
+                                  fullscreenDialog: true),
+                            );
+                          }
+                        },
+                      );
+                    },
+                  )
+                ]),
+              ),
             ]),
         Header(_scrollController, widget.product),
       ]),

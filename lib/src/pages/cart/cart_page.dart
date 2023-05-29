@@ -2,10 +2,12 @@ import 'package:exam/src/config/theme.dart';
 import 'package:exam/src/data/model/product/product.dart';
 import 'package:exam/src/data/repository/authen_repository.dart';
 import 'package:exam/src/pages/cart/bloc/cart_bloc.dart';
+import 'package:exam/src/pages/cart/order_success_page.dart';
 import 'package:exam/src/widgets/app_button.dart';
 import 'package:exam/src/widgets/app_image_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../bloc/app_bloc.dart';
 import '../../di/service_locator.dart';
@@ -51,7 +53,7 @@ class _CartPageState extends State<CartPage> {
                       }),
                 ),
                 Positioned(
-                  top: 40,
+                  top: 50,
                   left: 12,
                   child: NavigationIcon(
                     icon: Icons.arrow_back,
@@ -61,7 +63,7 @@ class _CartPageState extends State<CartPage> {
                   ),
                 ),
                 const Positioned(
-                  top: 40,
+                  top: 50,
                   child: Text(
                     "My cart",
                     style: TextStyle(
@@ -71,7 +73,7 @@ class _CartPageState extends State<CartPage> {
                   ),
                 ),
                 Positioned(
-                  bottom: 0,
+                  bottom: 20,
                   child: Container(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 12, vertical: 20),
@@ -113,12 +115,30 @@ class _CartPageState extends State<CartPage> {
                           bgColor: CustomTheme.primary,
                           textColor: CustomTheme.white,
                           onClick: () {
-                            final userId = context.read<AppBloc>().state.user.id ?? "";
-                            context.read<CartBloc>().add(ClearCart(userId));
-                            Future.delayed(const Duration(milliseconds: 500), () {
-                              context.read<CartBloc>().add(CartFetched(userId));
-                              Navigator.pop(context);
-                            });
+                            if (state.products.isNotEmpty) {
+                              final userId =
+                                  context.read<AppBloc>().state.user.id ?? "";
+                              context.read<CartBloc>().add(ClearCart(userId));
+                              Future.delayed(const Duration(milliseconds: 500),
+                                  () {
+                                context
+                                    .read<CartBloc>()
+                                    .add(CartFetched(userId));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const OrderSuccessPage()));
+                              });
+                            }else {
+                              Fluttertoast.showToast(
+                                msg: 'Your shopping cart is empty',
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                backgroundColor: Colors.black,
+                                textColor: Colors.white,
+                              );
+                            }
                           })
                     ]),
                   ),
@@ -195,7 +215,9 @@ class _CartPageState extends State<CartPage> {
               alignment: Alignment.topCenter,
               onPressed: () {
                 final userId = context.read<AppBloc>().state.user.id ?? "";
-                context.read<CartBloc>().add(RemoveFromCart(state.products[index], userId));
+                context
+                    .read<CartBloc>()
+                    .add(RemoveFromCart(state.products[index], userId));
                 Future.delayed(const Duration(milliseconds: 500), () {
                   context.read<CartBloc>().add(CartFetched(userId));
                 });
