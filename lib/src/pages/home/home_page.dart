@@ -30,7 +30,12 @@ class _HomePageState extends State<HomePage> {
     getIt<AuthenRepository>().currentUser.then((user) {
       context.read<CartBloc>().add(CartFetched(user.id ?? ""));
     });
+
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(statusBarBrightness: Brightness.light) // Or Brightness.dark
+    );
   }
+
 
   @override
   Widget build(BuildContext context) {

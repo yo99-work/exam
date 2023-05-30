@@ -2,12 +2,14 @@ import 'package:exam/src/pages/notification/bloc/notification_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../bloc/app_bloc.dart';
 import '../../config/theme.dart';
 import '../../data/repository/authen_repository.dart';
 import '../../di/service_locator.dart';
 import '../../widgets/app_image_view.dart';
 import '../../widgets/navigation_icon.dart';
 import '../home/bloc/product/product_bloc.dart';
+import '../login/login_page.dart';
 
 class NotificationPage extends StatefulWidget {
   final bool isPresentMode;
@@ -19,78 +21,85 @@ class NotificationPage extends StatefulWidget {
 }
 
 class _NotificationPageState extends State<NotificationPage> {
-
   @override
   void initState() {
     super.initState();
-    getIt<AuthenRepository>().currentUser.then((user) {
-      context.read<NotificationBloc>().add(NotificationFetched(user.id ?? ""));
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Material(
       type: MaterialType.transparency,
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: CustomTheme.primaryGradient
-        ),
-        child: Stack(
-          alignment: Alignment.center,
-            children: [
-              BlocBuilder<NotificationBloc, NotificationState>(
-                builder: (context, state) {
-                  switch (state.status) {
-                    case LazyLoadStatus.failure:
-                      return const Center(child: Text('failed to fetch notification'));
-                    case LazyLoadStatus.success:
-                      if (state.notifications.isEmpty) {
-                        return const Center(child: Text('data not found.'));
-                      }
-
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 90, bottom: 123),
-                        child: ListView.builder(
-                            itemCount: state.notifications.length,
-                            itemBuilder: (context, index) {
-                              return _CreateNotificationItem(state, index);
-                            }),
-                      );
-
-                    case LazyLoadStatus.initial:
-                      return const Center(child: CircularProgressIndicator());
-                  }
-
-                },
-              ),
-
-              (!widget.isPresentMode) ? const SizedBox(height: 0) :
-              Positioned(
-                top: 40,
-                left: 12,
-                child: NavigationIcon(
-                  icon: Icons.arrow_back,
-                  notificationValue: 0,
-                  colorIcon: CustomTheme.white,
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ),
-
-              const Positioned(
-                top: 50,
-                child: Text(
-                  "Notification",
-                  style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: CustomTheme.white),
-                ),
-              ),
-            ]
-        ),
+      child: BlocBuilder<AppBloc, AppState>(
+        builder: (context, state) {
+          return Container(
+            decoration:
+                const BoxDecoration(gradient: CustomTheme.primaryGradient),
+            child: (state.status == AppStatus.authenticated)
+                ? _notificationView(
+                    context,
+                  )
+                : const LoginPage(
+                    isPresentMode: false,
+                  ),
+          );
+        },
       ),
     );
+  }
+
+  Stack _notificationView(BuildContext context) {
+    getIt<AuthenRepository>().currentUser.then((user) {
+      context.read<NotificationBloc>().add(NotificationFetched(user.id ?? ""));
+    });
+    return Stack(alignment: Alignment.center, children: [
+      BlocBuilder<NotificationBloc, NotificationState>(
+        builder: (context, state) {
+          switch (state.status) {
+            case LazyLoadStatus.failure:
+              return const Center(child: Text('failed to fetch notification'));
+            case LazyLoadStatus.success:
+              if (state.notifications.isEmpty) {
+                return const Center(child: Text('data not found.'));
+              }
+
+              return Padding(
+                padding: const EdgeInsets.only(top: 90, bottom: 123),
+                child: ListView.builder(
+                    itemCount: state.notifications.length,
+                    itemBuilder: (context, index) {
+                      return _CreateNotificationItem(state, index);
+                    }),
+              );
+
+            case LazyLoadStatus.initial:
+              return const Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
+      (!widget.isPresentMode)
+          ? const SizedBox(height: 0)
+          : Positioned(
+              top: 40,
+              left: 12,
+              child: NavigationIcon(
+                icon: Icons.arrow_back,
+                notificationValue: 0,
+                colorIcon: CustomTheme.white,
+                onPressed: () => Navigator.pop(context),
+              ),
+            ),
+      const Positioned(
+        top: 50,
+        child: Text(
+          "Notification",
+          style: TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.bold,
+              color: CustomTheme.white),
+        ),
+      ),
+    ]);
   }
 
   Container _CreateNotificationItem(NotificationState state, int index) {
@@ -153,5 +162,4 @@ class _NotificationPageState extends State<NotificationPage> {
       ),
     );
   }
-
 }
