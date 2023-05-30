@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     context.read<FlashSaleProductBloc>().add(FlashSaleProductFetched());
-    context.read<ProductBloc>().add(ProductFetched());
+    context.read<ProductBloc>().add(ProductFetched(20));
     getIt<AuthenRepository>().currentUser.then((user) {
       context.read<CartBloc>().add(CartFetched(user.id ?? ""));
     });

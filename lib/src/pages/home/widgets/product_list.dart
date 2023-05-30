@@ -67,7 +67,7 @@ class _ProductListState extends State<ProductList> {
   }
 
   void _onScroll() {
-    if (_isBottom) context.read<ProductBloc>().add(ProductFetched());
+    if (_isBottom) context.read<ProductBloc>().add(ProductFetched(20));
   }
 
   bool get _isBottom {

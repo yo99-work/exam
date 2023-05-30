@@ -43,7 +43,10 @@ class _CartPageState extends State<CartPage> {
         return Material(
           type: MaterialType.transparency,
           child: Container(
-              color: CustomTheme.white,
+              decoration: BoxDecoration(
+                  gradient: CustomTheme.primaryGradient
+              ),
+              // color: CustomTheme.white,
               child: Stack(alignment: Alignment.center, children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 90, bottom: 123),
@@ -72,7 +75,7 @@ class _CartPageState extends State<CartPage> {
                     style: TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
-                        color: CustomTheme.primary),
+                        color: CustomTheme.white),
                   ),
                 ),
                 _CheckoutView(width: width, total: total, state: state,)
@@ -224,11 +227,12 @@ class _CheckoutView extends StatelessWidget {
     return Positioned(
       bottom: 20,
       child: Container(
+
         padding: const EdgeInsets.symmetric(
             horizontal: 12, vertical: 20),
         width: width,
         // height: 50,
-        color: CustomTheme.white,
+        color: Colors.transparent,
         child: Column(children: [
           SizedBox(
             width: width * 0.8,
@@ -238,6 +242,7 @@ class _CheckoutView extends StatelessWidget {
                   "In total",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
+                    color: CustomTheme.white,
                     fontSize: 18,
                   ),
                 ),
@@ -261,8 +266,8 @@ class _CheckoutView extends StatelessWidget {
           AppButton(
               text: "Checkout",
               width: width * 0.8,
-              bgColor: CustomTheme.primary,
-              textColor: CustomTheme.white,
+              bgColor: CustomTheme.white,
+              textColor: CustomTheme.primary,
               onClick: () {
                 if (state.products.isNotEmpty) {
                   final userId =

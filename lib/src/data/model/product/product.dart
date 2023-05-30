@@ -20,26 +20,25 @@ class Product extends Equatable {
   int? quantity = 1;
 
   int getPriceByQuantity() {
-    return  (price as int) * (quantity ?? 1);
+    return (price as int) * (quantity ?? 1);
   }
 
   //Mock
   bool isFlashSale = false;
   List<ProductTagType> tags = [];
 
-
   Product(
       this.id,
-        this.title,
-        this.description,
-        this.price,
-        this.discountPercentage,
-        this.rating,
-        this.stock,
-        this.brand,
-        this.category,
-        this.thumbnail,
-        this.images);
+      this.title,
+      this.description,
+      this.price,
+      this.discountPercentage,
+      this.rating,
+      this.stock,
+      this.brand,
+      this.category,
+      this.thumbnail,
+      this.images);
 
   //Mock
 
@@ -52,19 +51,24 @@ class Product extends Equatable {
     return convertToHuman(newPrice);
   }
 
-
   static String convertToHuman(int price) {
-    String amount = price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
+    String amount = price.toString().replaceAllMapped(
+        RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
     return "\$$amount";
   }
 
   static String convertToHumanD(double price) {
-    String amount = price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
+    String amount = price.toString().replaceAllMapped(
+        RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
     return "\$$amount";
   }
 
   void autoGenerateTag() {
-    List<ProductTagType> myList = [ProductTagType.bigSale, ProductTagType.cashBack, ProductTagType.freeDelivery];
+    List<ProductTagType> myList = [
+      ProductTagType.bigSale,
+      ProductTagType.cashBack,
+      ProductTagType.freeDelivery
+    ];
     tags = getRandomItems(myList, 2);
   }
 
@@ -83,9 +87,21 @@ class Product extends Equatable {
     return randomItems;
   }
 
-
   @override
-  List<Object?> get props => [id, quantity];
+  List<Object?> get props => [
+        id,
+        title,
+        description,
+        price,
+        discountPercentage,
+        rating,
+        stock,
+        brand,
+        category,
+        thumbnail,
+        images,
+        quantity
+      ];
 
   Product.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -100,7 +116,6 @@ class Product extends Equatable {
     thumbnail = json['thumbnail'];
     quantity = json['quantity'];
     images = json['images'].cast<String>();
-
   }
 
   Map<String, dynamic> toJson() {

@@ -21,7 +21,6 @@ EventTransformer<E> throttleDroppable<E>(Duration duration) {
 
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
   final productRepository = getIt.get<ProductRepository>();
-  final int _productLimit = 20;
   final throttleDuration = const Duration(milliseconds: 100);
 
   ProductBloc() : super(const ProductState()) {
@@ -38,19 +37,19 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     if (state.hasReachedMax) return;
     try {
       if (state.status == LazyLoadStatus.initial) {
-        final products = await productRepository.getProduct(_productLimit, state.products.length);
+        final products = await productRepository.getProduct(event.limit, state.products.length);
         final updateProducts = products.map((item) {
           item.autoGenerateTag();
           return item;
         }).toList();
 
-        return emit(state.copyWith(
+        emit(state.copyWith(
             status: LazyLoadStatus.success,
             products: updateProducts,
             hasReachedMax: false));
       }else {
         final products = await productRepository.getProduct(
-            _productLimit, state.products.length);
+            event.limit, state.products.length);
 
         final updateProducts = products.map((item) {
           item.autoGenerateTag();

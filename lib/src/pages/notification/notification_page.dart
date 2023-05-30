@@ -33,7 +33,9 @@ class _NotificationPageState extends State<NotificationPage> {
     return Material(
       type: MaterialType.transparency,
       child: Container(
-        color: CustomTheme.background,
+        decoration: BoxDecoration(
+          gradient: CustomTheme.primaryGradient
+        ),
         child: Stack(
           alignment: Alignment.center,
             children: [
@@ -82,7 +84,7 @@ class _NotificationPageState extends State<NotificationPage> {
                   style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
-                      color: CustomTheme.primary),
+                      color: CustomTheme.white),
                 ),
               ),
             ]
