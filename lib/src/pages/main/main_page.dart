@@ -1,4 +1,5 @@
 import 'package:exam/src/config/theme.dart';
+import 'package:exam/src/pages/cart/cart_page.dart';
 import 'package:exam/src/pages/home/home_page.dart';
 import 'package:exam/src/pages/notification/notification_page.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +46,7 @@ class MainPage extends StatelessWidget {
   List<Widget> _buildScreens() {
     return [
       const HomePage(),
+      const CartPage(isPresentMode: false,),
       const NotificationPage(isPresentMode: false),
       const SettingsPage()
     ];
@@ -59,6 +61,12 @@ class MainPage extends StatelessWidget {
         inactiveColorPrimary: Colors.white,
       ),
 
+      PersistentBottomNavBarItem(
+        icon: const Icon(Icons.shopping_cart),
+        inactiveIcon: const Icon(Icons.shopping_cart_outlined),
+        activeColorPrimary: Colors.white,
+        inactiveColorPrimary: Colors.white,
+      ),
 
       PersistentBottomNavBarItem(
         icon: const Icon(Icons.notifications_sharp),

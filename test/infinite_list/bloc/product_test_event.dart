@@ -6,7 +6,7 @@ void main() {
   group('ProductEvent', () {
     group('ProductFetched', () {
       test('supports value comparison', () {
-        expect(ProductFetched(), ProductFetched());
+        expect(ProductFetched(10), ProductFetched(10));
       });
     });
   });

@@ -14,7 +14,8 @@ import '../../di/service_locator.dart';
 import '../../widgets/navigation_icon.dart';
 
 class CartPage extends StatefulWidget {
-  const CartPage({super.key});
+  final bool isPresentMode;
+  const CartPage({required this.isPresentMode});
 
   @override
   _CartPageState createState() => _CartPageState();
@@ -42,7 +43,10 @@ class _CartPageState extends State<CartPage> {
         return Material(
           type: MaterialType.transparency,
           child: Container(
-              color: CustomTheme.white,
+              decoration: BoxDecoration(
+                  gradient: CustomTheme.primaryGradient
+              ),
+              // color: CustomTheme.white,
               child: Stack(alignment: Alignment.center, children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 90, bottom: 123),
@@ -52,6 +56,8 @@ class _CartPageState extends State<CartPage> {
                         return _createCartItem(state, index);
                       }),
                 ),
+                (!widget.isPresentMode) ?
+                const SizedBox(width: 0) :
                 Positioned(
                   top: 50,
                   left: 12,
@@ -69,85 +75,17 @@ class _CartPageState extends State<CartPage> {
                     style: TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
-                        color: CustomTheme.primary),
+                        color: CustomTheme.white),
                   ),
                 ),
-                Positioned(
-                  bottom: 20,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 20),
-                    width: width,
-                    // height: 50,
-                    color: CustomTheme.white,
-                    child: Column(children: [
-                      SizedBox(
-                        width: width * 0.8,
-                        child: Row(
-                          children: [
-                            const Text(
-                              "In total",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                            const Spacer(
-                              flex: 1,
-                            ),
-                            Text(
-                              Product.convertToHumanD(total),
-                              style: const TextStyle(
-                                color: CustomTheme.deepOrange,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      AppButton(
-                          text: "Checkout",
-                          width: width * 0.8,
-                          bgColor: CustomTheme.primary,
-                          textColor: CustomTheme.white,
-                          onClick: () {
-                            if (state.products.isNotEmpty) {
-                              final userId =
-                                  context.read<AppBloc>().state.user.id ?? "";
-                              context.read<CartBloc>().add(ClearCart(userId));
-                              Future.delayed(const Duration(milliseconds: 500),
-                                  () {
-                                context
-                                    .read<CartBloc>()
-                                    .add(CartFetched(userId));
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const OrderSuccessPage()));
-                              });
-                            }else {
-                              Fluttertoast.showToast(
-                                msg: 'Your shopping cart is empty',
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.BOTTOM,
-                                backgroundColor: Colors.black,
-                                textColor: Colors.white,
-                              );
-                            }
-                          })
-                    ]),
-                  ),
-                )
+                _CheckoutView(width: width, total: total, state: state,)
               ])),
         );
       },
     );
   }
+
+
 
   Container _createCartItem(CartState state, int index) {
     return Container(
@@ -195,7 +133,7 @@ class _CartPageState extends State<CartPage> {
                 const SizedBox(
                   height: 12,
                 ),
-                _updateCart(state, index)
+                _createActionupdateCart(state, index)
               ],
             ),
           )
@@ -204,7 +142,7 @@ class _CartPageState extends State<CartPage> {
     );
   }
 
-  Row _updateCart(CartState state, int index) {
+  Row _createActionupdateCart(CartState state, int index) {
     return Row(
       children: [
         SizedBox(
@@ -270,6 +208,94 @@ class _CartPageState extends State<CartPage> {
               ),
             )),
       ],
+    );
+  }
+}
+
+class _CheckoutView extends StatelessWidget {
+  const _CheckoutView({
+    required this.width,
+    required this.total,
+    required this.state,
+  });
+  final double width;
+  final double total;
+  final CartState state;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      bottom: 20,
+      child: Container(
+
+        padding: const EdgeInsets.symmetric(
+            horizontal: 12, vertical: 20),
+        width: width,
+        // height: 50,
+        color: Colors.transparent,
+        child: Column(children: [
+          SizedBox(
+            width: width * 0.8,
+            child: Row(
+              children: [
+                const Text(
+                  "In total",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: CustomTheme.white,
+                    fontSize: 18,
+                  ),
+                ),
+                const Spacer(
+                  flex: 1,
+                ),
+                Text(
+                  Product.convertToHumanD(total),
+                  style: const TextStyle(
+                    color: CustomTheme.deepOrange,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                )
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 12,
+          ),
+          AppButton(
+              text: "Checkout",
+              width: width * 0.8,
+              bgColor: CustomTheme.white,
+              textColor: CustomTheme.primary,
+              onClick: () {
+                if (state.products.isNotEmpty) {
+                  final userId =
+                      context.read<AppBloc>().state.user.id ?? "";
+                  context.read<CartBloc>().add(ClearCart(userId));
+                  Future.delayed(const Duration(milliseconds: 500),
+                      () {
+                    context
+                        .read<CartBloc>()
+                        .add(CartFetched(userId));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const OrderSuccessPage()));
+                  });
+                } else {
+                  Fluttertoast.showToast(
+                    msg: 'Your shopping cart is empty',
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    backgroundColor: Colors.black,
+                    textColor: Colors.white,
+                  );
+                }
+              })
+        ]),
+      ),
     );
   }
 }

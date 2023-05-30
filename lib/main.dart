@@ -8,9 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'firebase_options.dart';
 Future<void> main() async {
-
-  //configure
-  // runApp(const MyApp());
   WidgetsFlutterBinding.ensureInitialized();
 
   SystemChrome.setPreferredOrientations([

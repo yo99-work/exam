@@ -57,7 +57,7 @@ class _HeaderState extends State<Header> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const CartPage()))
+                                    builder: (context) => const CartPage(isPresentMode: true,)))
                           },
                       icon: Icons.shopping_cart,
                       notificationValue: state.products.length);

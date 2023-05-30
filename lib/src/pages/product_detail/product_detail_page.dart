@@ -25,7 +25,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(children: [
@@ -71,12 +70,22 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         bgColor: CustomTheme.primary,
                         textColor: Colors.white,
                         onClick: () {
-                          final userId = context.read<AppBloc>().state.user.id ?? "";
+                          final userId =
+                              context.read<AppBloc>().state.user.id ?? "";
                           if (state.status == AppStatus.authenticated) {
-                            context.read<CartBloc>().add(AddToCart(widget.product, userId));
-                            Future.delayed(const Duration(milliseconds: 500), () {
+                            context
+                                .read<CartBloc>()
+                                .add(AddToCart(widget.product, userId));
+                            Future.delayed(const Duration(milliseconds: 500),
+                                () {
                               context.read<CartBloc>().add(CartFetched(userId));
-                              _updateCart();
+                              Fluttertoast.showToast(
+                                msg: 'Added to cart',
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                backgroundColor: Colors.black,
+                                textColor: Colors.white,
+                              );
                             });
                           } else {
                             Navigator.push(
@@ -97,18 +106,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             ]),
         Header(_scrollController, widget.product),
       ]),
-    );
-  }
-
-
-  void _updateCart() {
-    // Code to update the cart
-    Fluttertoast.showToast(
-      msg: 'Added to cart',
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: Colors.black,
-      textColor: Colors.white,
     );
   }
 }

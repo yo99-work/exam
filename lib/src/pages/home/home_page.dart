@@ -8,6 +8,7 @@ import 'package:exam/src/pages/home/widgets/flash_sale_list.dart';
 import 'package:exam/src/pages/home/widgets/header.dart';
 import 'package:exam/src/pages/home/widgets/product_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../config/theme.dart';
@@ -25,11 +26,16 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     context.read<FlashSaleProductBloc>().add(FlashSaleProductFetched());
-    context.read<ProductBloc>().add(ProductFetched());
+    context.read<ProductBloc>().add(ProductFetched(20));
     getIt<AuthenRepository>().currentUser.then((user) {
       context.read<CartBloc>().add(CartFetched(user.id ?? ""));
     });
+
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(statusBarBrightness: Brightness.light) // Or Brightness.dark
+    );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +55,6 @@ class _HomePageState extends State<HomePage> {
         Header(_scrollController),
       ]),
     );
-
-
-
   }
 }
 
